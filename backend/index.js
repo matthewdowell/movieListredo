@@ -20,7 +20,14 @@ app.get('/groceries', (req, res) => {
 
 app.post('/groceries', (req, res) => {
   console.log(req.body);
-  db.query('INSERT INTO groceries VALUES (?, ?, ?, ?)')
+  var { item, quantity } = req.body;
+  db.query('INSERT INTO groceries VALUES (?, ?, ?, ?)', [null, item, quantity, 0], (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(201)
+    }
+  })
 })
 
 app.listen('3000', () =>

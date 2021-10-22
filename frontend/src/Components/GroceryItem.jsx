@@ -10,7 +10,7 @@ export default class GroceryItem extends React.Component {
 
   render() {
     return (
-      <li>
+      <li >
         <span>{this.props.grocery.item}:   </span>
         <span>{this.props.grocery.quantity}</span>
       </li>

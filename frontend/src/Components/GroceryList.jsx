@@ -7,8 +7,13 @@ export default class GroceryList extends React.Component {
     super()
 
     this.state = {
-      groceries: []
+      groceries: [],
+      item: '',
+      quantity: 0
     };
+
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   fetchGroceries() {
@@ -24,11 +29,25 @@ export default class GroceryList extends React.Component {
   postGrocery(grocery) {
     axios
       .post('/groceries', grocery)
-      .then(fetchGroceries())
+      .then(this.fetchGroceries())
   }
 
   componentDidMount() {
     this.fetchGroceries();
+  }
+
+  handleFormChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  handleButtonClick(e) {
+    e.preventDefault();
+    this.postGrocery({
+      item: this.state.item,
+      quantity:  Number(this.state.quantity)
+    });
   }
 
   render() {
@@ -38,16 +57,16 @@ export default class GroceryList extends React.Component {
         <h1>Grocery List</h1>
         <form>
           <label> Item
-            <input name="item" value=""/>
+            <input name="item" value={this.state.item} onChange={this.handleFormChange}/>
           </label>
           <label> Quantity
-            <input name="quantity" value=""/>
+            <input type='number' name="quantity" value={this.state.quantity} onChange={this.handleFormChange}/>
           </label>
-          <button>Add Grocery</button>
+          <button onClick={this.handleButtonClick}>Add Grocery</button>
         </form>
         <ul className="groceries">
           {this.state.groceries.map(grocery => {
-            return (<GroceryItem grocery={grocery}/>)
+            return (<GroceryItem grocery={grocery} key={grocery.id}/>)
           })}
         </ul>
       </div>
