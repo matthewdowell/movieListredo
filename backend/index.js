@@ -30,6 +30,18 @@ app.post('/groceries', (req, res) => {
   })
 })
 
+app.put('/groceries', (req, res) => {
+  console.log(req.body)
+  var { id, purchased } = req.body;
+  db.query('UPDATE groceries SET purchased = ? WHERE id = ?', [purchased, id], (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+})
+
 app.listen('3000', () =>
   console.log('listening on 3000')
 )

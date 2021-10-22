@@ -14,6 +14,7 @@ export default class GroceryList extends React.Component {
 
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.fetchGroceries = this.fetchGroceries.bind(this);
   }
 
   fetchGroceries() {
@@ -66,7 +67,7 @@ export default class GroceryList extends React.Component {
         </form>
         <ul className="groceries">
           {this.state.groceries.map(grocery => {
-            return (<GroceryItem grocery={grocery} key={grocery.id}/>)
+            return (<GroceryItem grocery={grocery} key={grocery.id} fetch={this.fetchGroceries}/>)
           })}
         </ul>
       </div>
