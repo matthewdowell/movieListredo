@@ -1,10 +1,34 @@
 import React from 'react';
+import axios from 'axios';
+import GroceryItem from './GroceryItem.jsx';
 
 export default class GroceryList extends React.Component {
   constructor() {
     super()
 
-    this.state = {};
+    this.state = {
+      groceries: []
+    };
+  }
+
+  fetchGroceries() {
+    axios
+      .get('/groceries')
+      .then(({ data }) => {
+        this.setState({
+          groceries: data
+        })
+      })
+  }
+
+  postGrocery(grocery) {
+    axios
+      .post('/groceries', grocery)
+      .then(fetchGroceries())
+  }
+
+  componentDidMount() {
+    this.fetchGroceries();
   }
 
   render() {
@@ -21,31 +45,10 @@ export default class GroceryList extends React.Component {
           </label>
           <button>Add Grocery</button>
         </form>
-        <ul class="groceries">
-          <li>
-            <span> frozen pizza </span>
-            <span> 5 </span>
-          </li>
-          <li>
-            <span> noosa yogurt </span>
-            <span> 10 </span>
-          </li>
-          <li>
-            <span> wine </span>
-            <span> 2 </span>
-          </li>
-          <li>
-            <span> iced coffe </span>
-            <span> 1 </span>
-          </li>
-          <li>
-            <span> a </span>
-            <span> 1 </span>
-          </li>
-          <li>
-            <span> pizza </span>
-            <span> 1 </span>
-          </li>
+        <ul className="groceries">
+          {this.state.groceries.map(grocery => {
+            return (<GroceryItem grocery={grocery}/>)
+          })}
         </ul>
       </div>
     )

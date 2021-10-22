@@ -18,6 +18,11 @@ app.get('/groceries', (req, res) => {
   })
 })
 
+app.post('/groceries', (req, res) => {
+  console.log(req.body);
+  db.query('INSERT INTO groceries VALUES (?, ?, ?, ?)')
+})
+
 app.listen('3000', () =>
   console.log('listening on 3000')
 )
