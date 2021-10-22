@@ -19,7 +19,6 @@ app.get('/groceries', (req, res) => {
 })
 
 app.post('/groceries', (req, res) => {
-  console.log(req.body);
   var { item, quantity } = req.body;
   db.query('INSERT INTO groceries VALUES (?, ?, ?, ?)', [null, item, quantity, 0], (err, results) => {
     if (err) {
@@ -31,9 +30,19 @@ app.post('/groceries', (req, res) => {
 })
 
 app.put('/groceries', (req, res) => {
-  console.log(req.body)
   var { id, purchased } = req.body;
   db.query('UPDATE groceries SET purchased = ? WHERE id = ?', [purchased, id], (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+})
+
+app.delete('/groceries/:id', (req, res) => {
+  var id = Number(req.params.id);
+  db.query('DELETE FROM groceries WHERE id = ?', [id], (err, results) => {
     if (err) {
       console.log(err);
     } else {

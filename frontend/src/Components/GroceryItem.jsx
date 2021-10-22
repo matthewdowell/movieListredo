@@ -10,6 +10,7 @@ export default class GroceryItem extends React.Component {
     };
 
     this.handleBoxCheck = this.handleBoxCheck.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
   }
 
   updateGrocery(purchased) {
@@ -18,15 +19,25 @@ export default class GroceryItem extends React.Component {
     .then(this.props.fetch())
   }
 
+  deleteGrocery(id) {
+    console.log(id);
+    axios
+      .delete(`/groceries/${id}`)
+      .then(this.props.fetch())
+  }
+
   handleBoxCheck(e) {
     this.setState({
       purchased: !this.state.purchased
     });
-    console.log(e.target.checked);
     this.updateGrocery({
       id: this.props.grocery.id,
       purchased: e.target.checked
     })
+  }
+
+  handleDeleteClick(e) {
+     this.deleteGrocery(this.props.grocery.id);
   }
 
   render() {
@@ -41,6 +52,7 @@ export default class GroceryItem extends React.Component {
         </input>
         <span>{this.props.grocery.item}:   </span>
         <span>{this.props.grocery.quantity}</span>
+        <button onClick={this.handleDeleteClick}>Delete</button>
       </li>
     )
   }
